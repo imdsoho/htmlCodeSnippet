@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            const counter = (function(){
+                let num = 0;
+
+                return {
+                    increase(){
+                        return ++num;
+                    },
+                    decrease(){
+                        return num > 0 ? --num : 0; 
+                    }
+                }
+            }());
+            console.log(counter.increase());
+            console.log(counter.decrease());
+
+
+            const CounterClass = (function(){
+                let num = 0;
+
+                function CounterClass(){
+                }
+
+                CounterClass.prototype.increase = function(){
+                    return ++num;
+                }
+                CounterClass.prototype.decrease = function(){
+                    return num > 0 ? --num : 0;
+                }
+
+                return CounterClass;
+            })
+
+            const counterClass = new CounterClass();
+            console.log(counterClass.increase());
+            console.log(counterClass.decrease());
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            console.log("var variable hosting ", varVariable);
+            //console.log("const variable hosting ", constVariable);  // Error - befor initialization
+            //console.log("let variable hosting ", letVariable);      // Error - befor initialization
+            hostingFunctionCall();
+
+            var varVariable = "var variable";
+
+            function hostingFunctionCall(){
+                console.log("function hoisting call test");
+            }
+
+            const constVariable = "const variable";
+            let letVariable = "let variable";
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
