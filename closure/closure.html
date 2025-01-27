@@ -14,14 +14,17 @@
                     }
                 }
             }());
-            console.log(counter.increase());
-            console.log(counter.decrease());
+            //console.log(counter.increase());
+            //console.log(counter.decrease());
 
 
+            console.log("ready");
             const CounterClass = (function(){
+                console.log("run script");
                 let num = 0;
 
                 function CounterClass(){
+                    console.log("function init");
                 }
 
                 CounterClass.prototype.increase = function(){
@@ -32,9 +35,12 @@
                 }
 
                 return CounterClass;
-            })
+            }());
 
+            console.log("load");
+            console.log(typeof CounterClass, "\n", CounterClass);
             const counterClass = new CounterClass();
+            console.log("create Class");
             console.log(counterClass.increase());
             console.log(counterClass.decrease());
         </script>

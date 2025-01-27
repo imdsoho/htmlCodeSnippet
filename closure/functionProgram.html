@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            function makeCounter(aux){
+                let counter = 0;
+
+                return function(){
+                    counter = aux(counter);
+
+                    return counter;
+                }
+            }
+            const increaser = makeCounter(increase);
+            console.log(increaser());
+            const decreaser = makeCounter(decrease);
+            console.log(decreaser());
+            console.log(increaser === decreaser);
+
+
+            const counter = (function(){
+                let counter = 0;
+
+                return function(aux){
+                    counter = aux(counter);
+
+                    return counter;
+                }
+            }());
+            console.log(counter(increase));
+            console.log(counter(decrease));
+
+
+            // auxiliary function
+            function increase(n){
+                return ++n;
+            }
+            function decrease(n){
+                return --n;
+            }
+        </script>
+    </head>
+    <body></body>
+</html>

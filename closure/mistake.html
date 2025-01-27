@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            var varFuncs = [];
+            for(var i=0; i<3; i++){
+                varFuncs[i] = function(){ return i; }
+            }
+            for(var j=0; j<varFuncs.length; j++){
+                console.log(varFuncs[j]());
+            }
+
+            // SUCCESS
+            let letFuncs = [];
+            for(let i=0; i<3; i++){
+                letFuncs[i] = function(){ return i; }
+            }
+            for(let j=0; j<letFuncs.length; j++){
+                console.log(letFuncs[j]());
+            }
+
+            // SUCCESS
+            var funcs = [];
+            for (var i=0; i<3; i++){
+                // id = 자유변수; 즉시 실행 함수가 반환한 중첩 함수의 상위 스코프에 존재;
+                funcs[i] = (function(id){ // 클로져
+                    return function(){
+                        return id;
+                    };
+                }(i));
+            }
+            for(var j=0; j<funcs.length; j++){
+                console.log(funcs[j]());
+            }
+
+            // SUCCESS
+            const arrayFuncs = Array.from(new Array(3), (_, i) => () => i);
+            arrayFuncs.forEach(f => console.log(f()));
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
+
