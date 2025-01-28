@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            var x = 1;
+
+            if(true){
+                var x = 10;
+            }
+            console.log(x); // 10
+
+            var xi = 10;
+            for(var xi=0; xi<5; xi++){
+            }
+            console.log(xi); // 5
+
+            // 함수가 어디서 정의했는지에 따라 상위 스코프를 결정한다.
+            // 함수의 상위 스코프는 언제나 자신이 정의된 스코프이다.
+            var xs = 1;
+            function foo(){
+                var xs = 10;
+
+                bar();
+            }
+            function bar(){
+                console.log(xs);
+            }
+            foo(); // 1
+            bar(); // 1
+
+            var cx = 7;
+            function closureFoo(){
+                var cx = 2;
+
+                function closureBar(){
+                    console.log(cx);
+                }
+
+                return closureBar;
+            }
+            var retBar = closureFoo();
+            retBar(); // 2
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
