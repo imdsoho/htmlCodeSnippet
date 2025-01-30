@@ -24,6 +24,7 @@
             // Object.prototype으로부터 상속받은 __proto__ 접근자 프로퍼티와 함수 객체만이 가지고 있는
             // prototype 프로퍼티는 결국 동일한 프로토타입을 가리킨다.
             const obj2 = {};
+            console.log(obj2.__proto__) // Object
             console.log(obj2.__proto__ === Object.prototype); // true
             console.log((function(){}).prototype.__proto__ === Object.prototype); //true
             console.log(obj2.__proto__ === (function(){}).prototype.__proto__); // true
@@ -33,6 +34,18 @@
             }
             const me = new Person2('Hello');
             console.log(Person2.prototype === me.__proto__); // true
+            console.dir(Person2.__proto__); // anonymous()
+            console.dir(Object.prototype); // constructor - Object()
+            console.dir(Person2.prototype); // constructor - Person2(name)
+            console.dir(me.__proto__); // Person2
+            console.dir(me.prototype); // undefined
+            console.dir(me.__proto__.constructor === Person2); // true
+            console.log(me.constructor === Person2) // true
+
+            // 구분       | 소유         | 값            | 사용 주체   | 사용 목적 |
+            // __proto__ | 모든 객체     | 프로토타입의 참조 | 모든 객체   | 객체가 자신의 프로토타입에 접근 또는 교체하기 위해 사용 |
+            // prototype | constructor | 프로토타입의 참조 | 생성자 함수 | 생성자 함수가 자신이 생성할 객체의 프로토타입을 할당하기 위해 사용 |
+
 
         </script>
     </head>

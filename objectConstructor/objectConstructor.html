@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            const strObj = new String('Hello');
+            console.dir(String.__proto__); // funtion anonymouse
+            // 객체가 자신의 프로토타입에 접근 또는 교체하기 위해 사용
+
+            console.dir(String.prototype); // String
+            // 생성자 함수가 자신이 생성할 객체의 프로토타입을 할당하기 위해 사용 
+
+            console.dir(strObj.prototype); // undefined
+            console.dir(strObj.__proto__); // String
+            console.log(typeof strObj); // object
+            console.log(strObj); // {"Hello"}
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
