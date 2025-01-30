@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            console.log((function(){}).hasOwnProperty('prototype')); // true
+            console.log((function(){}).prototype); // {} [[Prototype]]: Object
+
+            console.log(({}).hasOwnProperty('prototype')); // false
+            console.log(({}).prototype); // undefined
+
+            // 화살표 함수는 non-constructor이다. 
+            // non-constructor는 prototype 프로퍼티를 소유하지 않는다.
+            const Person = name => {
+                this.name = name;
+            }
+            console.log(Person.hasOwnProperty('prototype')); // false
+
+            // ES6 메소드 축약 표현으로 정의한 메소드는 non-constructor이다.
+            const obj = {
+                foo(){}
+            };
+            console.log(obj.hasOwnProperty('prototype')); // false
+
+            // Object.prototype으로부터 상속받은 __proto__ 접근자 프로퍼티와 함수 객체만이 가지고 있는
+            // prototype 프로퍼티는 결국 동일한 프로토타입을 가리킨다.
+            const obj2 = {};
+            console.log(obj2.__proto__ === Object.prototype); // true
+            console.log((function(){}).prototype.__proto__ === Object.prototype); //true
+            console.log(obj2.__proto__ === (function(){}).prototype.__proto__); // true
+
+            function Person2(name){
+                this.name = name;
+            }
+            const me = new Person2('Hello');
+            console.log(Person2.prototype === me.__proto__); // true
+
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
