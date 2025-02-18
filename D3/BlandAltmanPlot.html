@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Bland–Altman Plot</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+    <svg width="800" height="600"></svg>
+    <script> 
+        // Sample data (paired measurements)
+        const data = [
+            { method1: 10, method2: 9.5 }, 
+            { method1: 15, method2: 14.8 }, 
+            { method1: 20, method2: 19.5 }, 
+            { method1: 25, method2: 26 }, 
+            { method1: 30, method2: 31 }, 
+            { method1: 35, method2: 34.2 }, 
+            { method1: 40, method2: 39 }, 
+            { method1: 45, method2: 43.5 }, 
+            { method1: 50, method2: 50.5 }
+        ]; 
+        // Compute Bland–Altman values 
+        const baData = data.map(d => (
+            { 
+                mean: (d.method1 + d.method2) / 2, 
+                diff: d.method1 - d.method2
+            }
+        ));
+        console.dir(baData);
+
+        // Compute mean difference (bias) 
+        const meanDiff = d3.mean(baData, d => d.diff);
+        console.log(meanDiff);
+
+        // Compute standard deviation of differences 
+        const stdDev = d3.deviation(baData, d => d.diff);
+        console.log(stdDev);
+
+        // Compute upper and lower limits of agreement (95%) 
+        const upperLimit = meanDiff + 1.96 * stdDev; 
+        const lowerLimit = meanDiff - 1.96 * stdDev;
+        console.log(upperLimit, lowerLimit);
+
+        // Set up SVG dimensions 
+        const svg = d3.select("svg");
+        const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+        const width = svg.attr("width") - margin.left - margin.right
+        const height = svg.attr("height") - margin.top - margin.bottom;
+
+        const g = svg.append("g")
+                        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+        // Define scales 
+        const xScale = d3.scaleLinear()
+                        .domain([d3.min(baData, d => d.mean) - 5, d3.max(baData, d => d.mean) + 5])
+                        .range([0, width]);
+
+        const yScale = d3.scaleLinear()
+                        .domain([d3.min(baData, d => d.diff) - 5, d3.max(baData, d => d.diff) + 5])
+                        .range([height, 0]); 
+
+        // Draw scatter points 
+        g.selectAll("circle")
+            .data(baData)
+            .enter()
+            .append("circle")
+                .attr("cx", d => xScale(d.mean))
+                .attr("cy", d => yScale(d.diff))
+                .attr("r", 5)
+                .attr("fill", "steelblue"); 
+
+        // Draw mean difference line (bias) 
+        g.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", yScale(meanDiff))
+            .attr("y2", yScale(meanDiff))
+            .attr("stroke", "red")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5");
+
+        // Draw upper agreement limit 
+        g.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", yScale(upperLimit))
+            .attr("y2", yScale(upperLimit))
+            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5"); 
+
+        // Draw lower agreement limit 
+        g.append("line")
+            .attr("x1", 0)
+            .attr("x2", width)
+            .attr("y1", yScale(lowerLimit))
+            .attr("y2", yScale(lowerLimit))
+            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5");
+
+        // Add axes 
+        g.append("g")
+            .attr("transform", `translate(0,${height})`)
+            .call(d3.axisBottom(xScale));
+
+        g.append("g")
+            .call(d3.axisLeft(yScale));
+
+        // Add labels 
+        g.append("text")
+            .attr("x", width / 2)
+            .attr("y", height + 35)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "14px")
+            .text("Mean of Two Methods");
+
+        g.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -height / 2)
+            .attr("y", -40)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "14px")
+            .text("Difference (Method1 - Method2)"); 
+        
+        g.append("text")
+            .attr("x", width - 150)
+            .attr("y", yScale(meanDiff) - 5)
+            .attr("fill", "red")
+            .text("Mean Diff"); 
+        
+        g.append("text")
+            .attr("x", width - 150)
+            .attr("y", yScale(upperLimit) - 5)
+            .text("+1.96 SD");
+        
+        g.append("text")
+            .attr("x", width - 150)
+            .attr("y", yScale(lowerLimit) - 5)
+            .text("-1.96 SD"); 
+        </script>
+</body>
+
+</html>
